@@ -14,9 +14,11 @@ import ca.dobervich.graph.HW5.Level.Room;
 
 public class Level implements Serializable {
 	private HashMap<String, Room> nodes;
+	private List<MovingEntity> allEnemies;
 
 	public Level() {
 		nodes = new HashMap<String, Room>();
+		allEnemies = new ArrayList<MovingEntity>();
 	}
 
 	public void addRoom(String name, String description) {
@@ -78,16 +80,36 @@ public class Level implements Serializable {
 		}
 	}
 
+	public List<MovingEntity> getAllEnemies() {
+		return allEnemies;
+	}
+
 	public class Room implements Serializable {
 		private HashMap<String, Room> neighbors;
 		private String name;
 		private String description;
 		private List<Item> items;
+		private List<MovingEntity> enemies;
 		
 		private Room(String name) {
 			neighbors = new HashMap<String, Room>();
 			items = new ArrayList<Item>();
+			enemies = new ArrayList<MovingEntity>();
 			this.name = name;
+		}
+		
+		public void addEnemy(MovingEntity enemy) {
+			enemies.add(enemy);
+		}
+		
+		public MovingEntity removeEnemy(String enemyName) {
+			for (int i = 0; i < enemies.size(); i++) {
+				MovingEntity enemy = enemies.get(i);
+				if (enemy.getName().equals(enemyName)) {
+					return enemies.remove(i);
+				}
+			}
+			return null;
 		}
 		
 		public void addItem(Item item) {
@@ -103,6 +125,14 @@ public class Level implements Serializable {
 			}
 			
 			return null;
+		}
+		
+		public String getEnemiesDisplayList() {
+			String str = "";
+			for (MovingEntity enemy : enemies) {
+				str += enemy.getName() + " "; 
+			}
+			return str;
 		}
 		
 		public String getItemDisplayList() {
@@ -146,6 +176,9 @@ public class Level implements Serializable {
 
 		public boolean hasNeighbor(Room nextRoom) {
 			return neighbors.containsKey(nextRoom.getName());
+		}
+		public HashMap<String, Room> getNeighbors(){
+			return neighbors;
 		}
 
 	}
