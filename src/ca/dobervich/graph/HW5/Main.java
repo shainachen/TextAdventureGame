@@ -34,7 +34,9 @@ public class Main {
 			response = s.nextLine();
 
 			String[] words = response.split(" ");
-
+			
+			g.tick(); //tick here or inside specific if-statements?
+			
 			if (words[0].equals("go")) {
 				String name = "";
 				if (words.length >= 2) {

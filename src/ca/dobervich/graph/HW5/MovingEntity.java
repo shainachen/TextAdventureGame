@@ -14,19 +14,20 @@ public abstract class MovingEntity extends Entity{
 	
 	public void moveRandom(){
 		List<String> keys = new ArrayList<String>(currentRoom.getNeighbors().keySet());
-		String randomKey = keys.get((int)(Math.random()*keys.size());
-		Level.Room randomValue = .get(randomKey);
-
+		String randomKey = keys.get((int)(Math.random()*keys.size()));
+		Level.Room randomValue = currentRoom.getNeighbors().get(randomKey);
+		
+		move(randomValue);
+	}
+	
+	public void chasePlayer(){
+		
 	}
 	
 	public void move(Level.Room room){
 		room.addEnemy(this);
 		currentRoom.removeEnemy(this.getName());
 		currentRoom = room;
-	}
-	
-	public void tick(){
-		move();
 	}
 	
 	public abstract void move();

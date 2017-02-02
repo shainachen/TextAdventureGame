@@ -20,6 +20,13 @@ public class Level implements Serializable {
 		nodes = new HashMap<String, Room>();
 		allEnemies = new ArrayList<MovingEntity>();
 	}
+	
+	public void tick(){
+		for (int i = 0; i < allEnemies.size(); i++) {
+			MovingEntity enemy = allEnemies.get(i);
+			enemy.move();
+		}
+	}
 
 	public void addRoom(String name, String description) {
 		Room n = new Room(name);
@@ -110,6 +117,16 @@ public class Level implements Serializable {
 				}
 			}
 			return null;
+		}
+		//left off here (bullet 4 in PDF)
+		public boolean hasEnemy(String enemyName){
+			String enemyList=getEnemiesDisplayList();
+			String[] enemyNames = enemyList.split(" ");
+			for(String enemy:enemyNames){
+				if(enemyName.equals(enemy))
+					return true;
+			}
+			return false;
 		}
 		
 		public void addItem(Item item) {
