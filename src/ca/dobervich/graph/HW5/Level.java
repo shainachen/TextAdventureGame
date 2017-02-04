@@ -20,8 +20,8 @@ public class Level implements Serializable {
 		nodes = new HashMap<String, Room>();
 		allEnemies = new ArrayList<MovingEntity>();
 	}
-	
-	public void tick(){
+
+	public void tick() {
 		for (int i = 0; i < allEnemies.size(); i++) {
 			MovingEntity enemy = allEnemies.get(i);
 			enemy.move();
@@ -97,18 +97,18 @@ public class Level implements Serializable {
 		private String description;
 		private List<Item> items;
 		private List<MovingEntity> enemies;
-		
+
 		private Room(String name) {
 			neighbors = new HashMap<String, Room>();
 			items = new ArrayList<Item>();
 			enemies = new ArrayList<MovingEntity>();
 			this.name = name;
 		}
-		
+
 		public void addEnemy(MovingEntity enemy) {
 			enemies.add(enemy);
 		}
-		
+
 		public MovingEntity removeEnemy(String enemyName) {
 			for (int i = 0; i < enemies.size(); i++) {
 				MovingEntity enemy = enemies.get(i);
@@ -118,32 +118,33 @@ public class Level implements Serializable {
 			}
 			return null;
 		}
-		//left off here (bullet 4 in PDF)
-		public boolean hasEnemy(String enemyName){
-			String enemyList=getEnemiesDisplayList();
+
+		// left off here (bullet 4 in PDF)
+		public boolean hasEnemy(String enemyName) {
+			String enemyList = getEnemiesDisplayList();
 			String[] enemyNames = enemyList.split(" ");
-			for(String enemy:enemyNames){
-				if(enemyName.equals(enemy))
+			for (String enemy : enemyNames) {
+				if (enemyName.equals(enemy))
 					return true;
 			}
 			return false;
 		}
-		public boolean hasEnemy(){
-			String enemyList=getEnemiesDisplayList();
+
+		// check if room has any enemy
+		public boolean hasEnemy() {
+			String enemyList = getEnemiesDisplayList();
 			String[] enemyNames = enemyList.split(" ");
-			for(String enemy:enemyNames){
+			for (String enemy : enemyNames) {
 				if (this.hasEnemy(enemy))
 					return true;
 			}
 			return false;
 		}
-		
 
-		
 		public void addItem(Item item) {
 			items.add(item);
 		}
-		
+
 		public Item removeItem(String itemName) {
 			for (int i = 0; i < items.size(); i++) {
 				Item item = items.get(i);
@@ -151,24 +152,24 @@ public class Level implements Serializable {
 					return items.remove(i);
 				}
 			}
-			
+
 			return null;
 		}
-		
+
 		public String getEnemiesDisplayList() {
 			String str = "";
 			for (MovingEntity enemy : enemies) {
-				str += enemy.getName() + " "; 
+				str += enemy.getName() + " ";
 			}
 			return str;
 		}
-		
+
 		public String getItemDisplayList() {
 			String str = "";
 			for (Item item : items) {
-				str += item.getName() + " "; 
+				str += item.getName() + " ";
 			}
-			
+
 			return str;
 		}
 
@@ -193,8 +194,17 @@ public class Level implements Serializable {
 
 			return names;
 		}
-		
-		
+
+		public String getSecondNeighborNames() {
+			String names = "";
+			String neighborList = this.getNeighborNames();
+			String[] neighborNames = neighborList.split(" ");
+			for (String neighbor : neighborNames) {
+				names += this.getNeighbor(neighbor).getNeighborNames();
+			}
+
+			return names;
+		}
 
 		public String getDescription() {
 			return description;
@@ -207,7 +217,8 @@ public class Level implements Serializable {
 		public boolean hasNeighbor(Room nextRoom) {
 			return neighbors.containsKey(nextRoom.getName());
 		}
-		public HashMap<String, Room> getNeighbors(){
+
+		public HashMap<String, Room> getNeighbors() {
 			return neighbors;
 		}
 
