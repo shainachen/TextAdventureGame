@@ -21,6 +21,15 @@ public class Level implements Serializable {
 		allEnemies = new ArrayList<MovingEntity>();
 	}
 
+	public String getAllEnemiesDisplayList() {
+		String str = "";
+		for (MovingEntity enemy : allEnemies) {
+			str += enemy.getName() + " ";
+		}
+		return str;
+	}
+	
+	
 	public void tick() {
 		for (int i = 0; i < allEnemies.size(); i++) {
 			MovingEntity enemy = allEnemies.get(i);
@@ -121,7 +130,7 @@ public class Level implements Serializable {
 
 		// left off here (bullet 4 in PDF)
 		public boolean hasEnemy(String enemyName) {
-			String enemyList = getEnemiesDisplayList();
+			String enemyList = getAllEnemiesDisplayList();
 			String[] enemyNames = enemyList.split(" ");
 			for (String enemy : enemyNames) {
 				if (enemyName.equals(enemy))
@@ -130,17 +139,7 @@ public class Level implements Serializable {
 			return false;
 		}
 
-		// check if room has any enemy
-		public boolean hasEnemy() {
-			String enemyList = getEnemiesDisplayList();
-			String[] enemyNames = enemyList.split(" ");
-			for (String enemy : enemyNames) {
-				if (this.hasEnemy(enemy))
-					return true;
-			}
-			return false;
-		}
-
+		
 		public void addItem(Item item) {
 			items.add(item);
 		}
@@ -163,6 +162,9 @@ public class Level implements Serializable {
 			}
 			return str;
 		}
+		
+		
+		
 
 		public String getItemDisplayList() {
 			String str = "";
