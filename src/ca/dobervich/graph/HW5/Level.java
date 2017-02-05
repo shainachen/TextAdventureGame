@@ -130,7 +130,7 @@ public class Level implements Serializable {
 
 		// left off here (bullet 4 in PDF)
 		public boolean hasEnemy(String enemyName) {
-			String enemyList = getAllEnemiesDisplayList();
+			String enemyList = getEnemiesDisplayList();
 			String[] enemyNames = enemyList.split(" ");
 			for (String enemy : enemyNames) {
 				if (enemyName.equals(enemy))
@@ -138,7 +138,15 @@ public class Level implements Serializable {
 			}
 			return false;
 		}
-
+		public boolean hasEnemy() {
+			String enemyList = getAllEnemiesDisplayList();
+			String[] enemyNames = enemyList.split(" ");
+			for (String enemy : enemyNames) {
+				if (this.hasEnemy(enemy))
+					return true;
+			}
+			return false;
+		}
 		
 		public void addItem(Item item) {
 			items.add(item);
