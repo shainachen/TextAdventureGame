@@ -3,39 +3,38 @@ package ca.dobervich.graph.HW5;
 import java.util.Scanner;
 
 public class Main {
-
+	private static Player player;
+	private static Level level;
+	
 	public static void main(String[] args) {
-		Level g = new Level();
+		level = new Level();
 
-		g.addRoom("hall", "a long dank hallway");
-		g.addRoom("closet", "a dark, dark closet");
-		g.addRoom("dungeon", "like a children's party");
+		level.addRoom("hall", "a long dank hallway");
+		level.addRoom("closet", "a dark, dark closet");
+		level.addRoom("dungeon", "like a children's party");
 
-		g.addOneWayDoor("hall", "dungeon");
-		g.addTwoWayDoor("hall", "closet");
+		level.addOneWayDoor("hall", "dungeon");
+		level.addTwoWayDoor("hall", "closet");
 		
 		Item lobster = new Item("lobster", "a delicous friend");
 		Item orb = new Item("orb", "the powerful orb of Emmert");
 
-		g.getRoom("closet").addItem(lobster);
-		g.getRoom("closet").addItem(orb);
-		
-		// Level g = Level.loadLevel("carnival.graph");
+		level.getRoom("closet").addItem(lobster);
+		level.getRoom("closet").addItem(orb);
+		MovingEntity pot = new Potato("potato", level.getRoom("hall"), "tasty", 10);
 
-		Player player = new Player(g.getRoom("hall"), "Carlos", "the Bold");
+		player = new Player(level.getRoom("hall"), "Carlos", "the Bold");
 
 		String response = "";
 		Scanner s = new Scanner(System.in);
 
 		displayCommands();
 		do {
-			System.out.println("You are in the " + player.getCurrentRoom().getName());
+			System.out.println("\nYou are in the " + player.getCurrentRoom().getName());
 			System.out.print("What do you want to do? >");
 			response = s.nextLine();
 
 			String[] words = response.split(" ");
-			
-			g.tick(); //tick here or inside specific if-statements?
 			
 			if (words[0].equals("go")) {
 				String name = "";
@@ -68,16 +67,15 @@ public class Main {
 					System.out.println("You're not carrying that!");
 				} else {
 					player.getCurrentRoom().addItem(item);
-					System.out.println("You drop the " + item.getName());
+					System.out.println("You dropped the " + item.getName());
 				}
 
 			} else if (words[0].equals("save")) {
 				String name = words[1];
 
-				g.saveLevel(name + ".graph");
+				level.saveLevel(name + ".graph");
 
 			} else if (words[0].equals("look")) {
-				System.out.println(player.getCurrentRoom().getDescription());
 				System.out.println("You see exits to: " + player.getCurrentRoom().getNeighborNames());
 				System.out.println("This room contains the items: " + player.getCurrentRoom().getItemDisplayList());
 			} else if (words[0].equals("add")) {
@@ -86,8 +84,8 @@ public class Main {
 				} else {
 					if (words[1].equals("room")) {
 						String name = words[2];
-						g.addRoom(name);
-						g.addTwoWayDoor(player.getCurrentRoom().getName(), name);
+						level.addRoom(name);
+						level.addTwoWayDoor(player.getCurrentRoom().getName(), name);
 						System.out.println("Added exit to room " + name);
 					}
 				}
@@ -97,8 +95,14 @@ public class Main {
 			} else {
 				displayCommands();
 			}
+			
+			level.tick();
 
 		} while (!response.equals("quit"));
+	}
+	
+	public static Player getPlayer(){
+		return player;
 	}
 
 	private static void displayCommands() {

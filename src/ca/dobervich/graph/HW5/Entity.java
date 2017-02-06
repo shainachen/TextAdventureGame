@@ -8,10 +8,10 @@ public abstract class Entity {
 	private int tickCount=0;
 	
 	public Entity(String name, Level.Room startingRoom, String description, int health){
-		currentRoom=startingRoom;
-		this.name=name;
-		this.description=description;
-		this.health=health;
+		currentRoom = startingRoom;
+		this.name = name;
+		this.description = description;
+		this.health = health;
 	}
 	
 	public Level.Room getCurrentRoom(){

@@ -34,6 +34,7 @@ public class Level implements Serializable {
 		for (int i = 0; i < allEnemies.size(); i++) {
 			MovingEntity enemy = allEnemies.get(i);
 			enemy.move();
+			System.out.println("Enemy " + enemy.getName() + " is in " + enemy.getCurrentRoom().getName());
 		}
 	}
 
@@ -116,16 +117,23 @@ public class Level implements Serializable {
 
 		public void addEnemy(MovingEntity enemy) {
 			enemies.add(enemy);
+			allEnemies.add(enemy);
+			enemy.setCurrentRoom(this);
 		}
 
 		public MovingEntity removeEnemy(String enemyName) {
 			for (int i = 0; i < enemies.size(); i++) {
 				MovingEntity enemy = enemies.get(i);
 				if (enemy.getName().equals(enemyName)) {
+					allEnemies.remove(i);
 					return enemies.remove(i);
 				}
 			}
 			return null;
+		}
+		
+		public boolean removeEnemy(MovingEntity enemy) {
+			return enemies.remove(enemy);
 		}
 
 		// left off here (bullet 4 in PDF)
@@ -170,9 +178,6 @@ public class Level implements Serializable {
 			}
 			return str;
 		}
-		
-		
-		
 
 		public String getItemDisplayList() {
 			String str = "";
@@ -226,6 +231,10 @@ public class Level implements Serializable {
 
 		public boolean hasNeighbor(Room nextRoom) {
 			return neighbors.containsKey(nextRoom.getName());
+		}
+		
+		public boolean hasNeighbor(String roomName) {
+			return neighbors.containsKey(roomName);
 		}
 
 		public HashMap<String, Room> getNeighbors() {
